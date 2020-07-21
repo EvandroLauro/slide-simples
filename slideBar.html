@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <TITLE> Meu Slide</TITLE>
+        <meta Author="Pablo Wellerson">
+        <meta Date="28/12/2018">
+        <style>
+            /* Estilização da div*/
+            #slide{
+                border: 1px solid black;
+                width: 1000px;
+                height: 300px;
+            }
+
+            #dvload{
+                width: 100%;
+                height: 5px;
+                margin-top: 25%;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            #dvbarra{
+                width: 0%;
+                height: 100%;
+                background-color: #fff;
+            }
+            
+            #btnEsquerdo{
+                margin-top: -100px;
+                display: flex;
+            }
+
+            #btnDireito{
+                margin-left: 960px;
+                margin-top: -20px;
+                display: flex;
+            }
+
+    
+        </style>
+    </head>
+
+        <script>
+            
+            var cont = 1;//////////// Função que incrementa a variável cont 
+            function inter(){      // para a mudança das imagens.
+                trocaImg(cont);    //
+                if(cont == 3){     //
+                    cont=1;        //
+                }else{             //       
+                    ++cont;        //
+                }                  //
+            }////////////////////////
+              
+            function trocaImg(cont){ //////////////////////////////// O cont faz a função de pular as imagens,
+                let obj;                                           // recebendo incremento da função inter.
+                obj=document.getElementById("slide");              //
+                obj.style.backgroundImage="url(foto"+cont+".png)"; //
+            } ///////////////////////////////////////////////////////
+               
+            function mouseEvent(){//////////////////////////// Pause o slide se passar o mouse por cima
+                let x = document.getElementById("slide");   //               
+                x.addEventListener("mouseover", executar);  // 
+                x.addEventListener("mouseout", executar);   //
+            }                                               //
+                                                            // 
+            var ligando = 0;                                //
+            function executar(){                            //
+                if(ligando == 0){                           //
+                    ligando = 1;                            //
+                    return ligando;                         //
+                }else if(ligando == 1){                     //
+                    ligando = 0;                            //
+                    anima();                                //
+                    return ligando;                         //
+                }                                           //
+            }/////////////////////////////////////////////////
+            
+            var tempoTroca = 0; ///////////////////////////////////////////////////////////// Codigo responsavel por unir
+            var vtempo;                                                                    // todas as function e fazer o 
+            var vbarra;                                                                    // slide funcionar 
+            function anima(){                                                              //
+                if(ligando == 0){                                                          //
+                    tempoTroca++;                                                          //
+                    if(tempoTroca >= 200){/// Vc pode alterar 300 e 3, esses dois valores  //
+                        tempoTroca = 0;    // controla o tempo que o slide vai demorar     //
+                        inter();///////////// para passar de uma foto pra outra            //
+                    }                                                                      //
+                vtempo = tempoTroca/2; //////////////////////// Barra de progresso         //
+                vbarra=document.getElementById("dvbarra");   //                            //
+                vbarra.style.width = vtempo + "%";           //                            //
+                window.requestAnimationFrame(anima);///////////                            //
+                                                                                           //
+                }else if(ligando == 1){/////////////////// Pause slide                     //
+                    window.cancelAnimationFrame(anima); //                                 //
+                }/////////////////////////////////////////                                 //
+            }                                                                              //
+            /////////////////////////////////////////////////////////////////////////////////
+
+            function trocaImgBotao(){//////////////////////////////////////////////////////////////// Troca slide 
+                document.getElementById("slide").style.backgroundImage = "url(foto"+cont+".png)";  //
+                tempoTroca = 0;                                                                    //     
+                trocaImg(cont);                                                                    //
+            }                                                                                      //
+                                                                                                   //
+            function esquerda(){                                                                   //
+                trocaImgBotao();                                                                   //
+                if(cont == 1){                                                                     //
+                    cont = 3;                                                                      //
+                }else if(cont == 3){                                                               //         
+                    cont = 2;                                                                      //
+                }else if(cont == 2){                                                               //
+                    cont = 1;                                                                      //
+                }                                                                                  //
+            }                                                                                      //                                                                           
+                                                                                                   //
+            function direita(){                                                                    //
+                trocaImgBotao();                                                                   //
+                if(cont < 3){                                                                      //
+                    ++cont;                                                                        //
+                }else{                                                                             //
+                    cont = 1;                                                                      //
+                }                                                                                  //
+            }////////////////////////////////////////////////////////////////////////////////////////
+
+            function botaoPointer(){////////////////////////////////////////////////// Exibe ponteiro quando passamos o cursor
+                let ponto = document.getElementsByClassName("botao");               // na bolinha do slide
+                for(var i = 0; i < ponto.length; i++){                              //
+                    ponto[i].style.cursor = "pointer";                              //
+                }                                                                   //
+            } ////////////////////////////////////////////////////////////////////////
+
+            window.addEventListener("load", anima); ////////////////// Responsavel por executar 
+            window.addEventListener("load", mouseEvent);            // 
+            window.addEventListener("load", inter);                 //
+            window.addEventListener("load", botaoPointer);////////////
+        </script>
+    <body>
+
+        <div id="slide">
+            
+            <div id="dvload">
+                <div id="dvbarra"></div>
+            </div>
+            <button class="botao" id="btnEsquerdo" type="button" onclick="esquerda()"><<<</button><button class="botao" id="btnDireito" type="button" onclick="direita()">>>></button>
+            
+        </div>
+
+    </body>
+</html>
